@@ -1,0 +1,37 @@
+{
+  "name": "generator-wp-theme",
+  "version": "3.2.2",
+  "description": "Yeoman generator for WordPress themes.",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "danny-allen/generator-wp-theme",
+  "author": {
+    "name": "Danny Allen",
+    "email": "",
+    "url": "https://github.com/danny-allen"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "app",
+    "module"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "yeoman-generator": "^0.18.0",
+    "chalk": "^0.5.0",
+    "yosay": "^0.3.0"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "peerDependencies": {
+    "yo": ">=1.0.0"
+  }
+}

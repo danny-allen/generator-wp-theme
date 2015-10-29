@@ -1,0 +1,35 @@
+/**
+ * <%= _.slugify(moduleName) %>
+ * <%= moduleDesc %>
+ */
+
+/**
+ * Base
+ */
+
+.<%= _.slugify(moduleName) %> {
+
+    /**
+     * Variables
+     */
+
+    $<%= _.slugify(moduleName) %>-var:    7em;
+    $<%= _.slugify(moduleName) %>-col-fg: #3B5998;
+    $<%= _.slugify(moduleName) %>-col-bg: #c0deed;
+
+
+    /**
+     * Elements
+     */
+
+    //element description
+    &__element {}
+
+
+    /**
+     * Variations
+     */
+
+    //variation description
+    &--variation {}
+}

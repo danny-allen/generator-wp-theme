@@ -57,7 +57,7 @@ gulp.task('html', ['pixrem'], function() {
         .pipe($.if('*.css', $.csso()))
         .pipe(assets.restore())
         .pipe($.useref())
-        .pipe($.if('*.php', $.minifyHtml({
+        .pipe($.if('*.html', $.minifyHtml({
             conditionals: true,
             loose: true
         })))
@@ -73,17 +73,37 @@ gulp.task('html', ['pixrem'], function() {
 
 
 gulp.task('movePhpFiles', ['html'], function(){
-    // Move perch partials to the correct folder
+    // Move wordpress partials to the correct folder
     gulp.src([
         'dist/header.php',
         'dist/footer.php'
     ])
     .pipe(gulp.dest('dist'));
+
+    // Move inc folder
+    gulp.src([
+        'app/inc/*.php'
+    ])
+    .pipe(gulp.dest('dist/inc'));
 });
 
-gulp.task('perch', function () {
-    return gulp.src(['app/**/*', '!app/header.php', '!app/footer.php'], { dot: true })
-        .pipe(gulp.dest('dist'));
+gulp.task('wordpress', function () {
+    return gulp.src(
+        [
+            //all these filetypes
+            'app/*.php', 'app/*.php', 'app/*.js', 'app/*.css',
+
+            //get all of the inc files too
+            'app/inc/*.php',
+
+            //these extra files
+            'app/LICENCE.md', 'app/screenshot.png',
+
+            //but not these
+            '!app/header.php', '!app/footer.php'
+        ],
+        { dot: true })
+    .pipe(gulp.dest('dist'));
 });
 
 
@@ -196,7 +216,7 @@ gulp.task('watch', ['connect'], function() {
 
 
 
-gulp.task('build', ['wiredepBuild', 'jshint', 'images', 'fonts', 'extras', 'movePhpFiles', 'perch'], function() {
+gulp.task('build', ['wiredepBuild', 'jshint', 'images', 'fonts', 'extras', 'movePhpFiles', 'wordpress'], function() {
     return gulp.src('dist/**/*').pipe($.size({
         title: 'build',
         gzip: true

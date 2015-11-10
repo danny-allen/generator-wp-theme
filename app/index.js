@@ -120,6 +120,27 @@ module.exports = yeoman.generators.Base.extend({
      * create the folder structure and move the template files.
      */
     writing: {
+            
+        _copyTemplates: function(self, files, folder){
+
+            //make sure folder is set and is a string
+            folder = (typeof folder !=='string')? '' : folder;
+
+            //loop through the filenames
+            for(var i in files){
+
+                //set the filenames
+                var filename = files[i];
+                var newfilename = (filename.charAt(0) === '_')? filename.substr(1) : filename; //removes leading underscore
+
+                //copy template and proccess it (EJS)
+                self.fs.copyTpl(
+                    self.templatePath(folder + '/' + filename),
+                    self.destinationPath('app/' + folder + newfilename),
+                    self
+                );
+            }
+        },
 
         //copy the gulp file
         copyGulpfile: function() {
@@ -162,6 +183,11 @@ module.exports = yeoman.generators.Base.extend({
             this.copy('gitignore', '.gitignore');
         },
 
+        //get gitignore
+        copyLanguages: function() {
+            this.directory('languages', 'app/languages');
+        },
+
 
         /**
          * copyApp
@@ -169,27 +195,6 @@ module.exports = yeoman.generators.Base.extend({
          * Copy files whilst processing them for vars using EJS (Effective JavaScript Templating).
          */
         copyApp: function() {
-            
-            function copyTemplates(self, files, folder){
-
-                //make sure folder is set and is a string
-                folder = (typeof folder !=='string')? '' : folder;
-
-                //loop through the filenames
-                for(var i in files){
-
-                    //set the filenames
-                    var filename = files[i];
-                    var newfilename = (filename.charAt(0) === '_')? filename.substr(1) : filename; //removes leading underscore
-
-                    //copy template and proccess it (EJS)
-                    self.fs.copyTpl(
-                        self.templatePath(folder + '/' + filename),
-                        self.destinationPath('app/' + folder + newfilename),
-                        self
-                    );
-                }
-            }
 
             //set the files to process
             var appFiles = [
@@ -221,10 +226,19 @@ module.exports = yeoman.generators.Base.extend({
                 '_theme_support.php'
             ];
 
+            //files to include within inc
+            var templateFiles = [
+                '_loop.php',
+                '_pagination.php',
+                '_searchform.php'
+            ];
+
             //process files
-            copyTemplates(this, appFiles, '');
-            copyTemplates(this, incFiles, 'inc/');
+            this.writing._copyTemplates(this, appFiles, '');
+            this.writing._(this, incFiles, 'inc/');
+            this.writing._(this, templateFiles, 'templates/');
         },
+
 
         //get the config files for the editor, jshint and bower
         copyProjectfiles: function() {

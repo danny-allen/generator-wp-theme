@@ -42,6 +42,11 @@ So, you've set up the generator. Now all you need to do is run it. Create a fold
 mkdir /path/to/theme
 ```
 
+This command will run the generator. Just answer all the questions and let Yeoman do it's thing!
+```
+yo wp-theme
+```
+
 Now when you create a theme in your WordPress installation you can symlink to this project folder. This this:
 
 

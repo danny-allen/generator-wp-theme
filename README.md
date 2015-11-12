@@ -10,13 +10,7 @@ The idea behind this structure, was to allow the project to have both a distribu
 
 ## Installation
 
-Set up the directory (or just move to it).
-
-```
-cd /the/generator/dir # make it if you need
-```
-
-Clone the repo to this folder.
+Set up the directory for the generator, move to it, and clone the repo.
 
 ```
 git clone https://github.com/danny-allen/generator-wp-theme .

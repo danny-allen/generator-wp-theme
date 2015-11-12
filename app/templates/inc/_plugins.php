@@ -54,13 +54,25 @@ function my_theme_register_required_plugins() {
          * Advanced Custom Fields
          */
         array(
-
-            'name'      =>  'Advanced Custom Fields',
-            'slug'      =>  'advanced-custom-fields',
-            'required'  =>  true,
-            'force_activation'      =>  true, 
+            'name'              =>  'Advanced Custom Fields',
+            'slug'              =>  'advanced-custom-fields',
+            'required'          =>  true,
+            'force_activation'  =>  true, 
 
         ),
+
+
+        /**
+         * W3 Total Cache
+         */
+        array(
+            'name'              =>  'W3 Total Cache',
+            'slug'              =>  'w3-total-cache',
+            'required'          =>  true,
+            'force_activation'  =>  false, 
+
+        ),
+        
 
         /**
          *  Advanced Custom Fields - Repeater (ADD-ON)

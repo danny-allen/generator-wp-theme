@@ -121,7 +121,18 @@ module.exports = yeoman.generators.Base.extend({
      */
     writing: {
             
-        _copyTemplates: function(self, files, folder){
+        /**
+         * copyTemplates
+         *
+         * Loops through an array of files and adds them to the desktination folder.
+         *
+         * This is done with ejs templating. It swaps the tags and replaces with vars
+         * set in this file: this.prompt.
+         * 
+         * @param  array    files  The files that are to be added to the folder.
+         * @param  string   folder The folder the files are to be added to, within app.
+         */
+        _copyTemplates: function(self, files, folder) {
 
             //make sure folder is set and is a string
             folder = (typeof folder !=='string')? '' : folder;
@@ -183,7 +194,7 @@ module.exports = yeoman.generators.Base.extend({
             this.copy('gitignore', '.gitignore');
         },
 
-        //get gitignore
+        //get languages
         copyLanguages: function() {
             this.directory('languages', 'app/languages');
         },
@@ -213,11 +224,12 @@ module.exports = yeoman.generators.Base.extend({
                 '_single.php',
                 '_style.css',
                 '_tag.php',
-                '_template-demo.php',
+                '_template-demo.php'
             ];
 
             //files to include within inc
             var incFiles = [
+                '_plugins.php',
                 '_actions.php',
                 '_custom_post_types.php',
                 '_filters.php',
@@ -235,8 +247,12 @@ module.exports = yeoman.generators.Base.extend({
 
             //process files
             this.writing._copyTemplates(this, appFiles, '');
-            this.writing._(this, incFiles, 'inc/');
-            this.writing._(this, templateFiles, 'templates/');
+            this.writing._copyTemplates(this, incFiles, 'inc/');
+            this.writing._copyTemplates(this, templateFiles, 'templates/');
+
+            this.copy('class-tgm-plugin-activation.php', 'app/class-tgm-plugin-activation.php');
+
+                
         },
 
 
@@ -264,7 +280,6 @@ module.exports = yeoman.generators.Base.extend({
                     this.destinationPath(newfilename),
                     this
                 );
-
             }
         }
     },

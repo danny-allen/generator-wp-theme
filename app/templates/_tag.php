@@ -6,9 +6,9 @@
 
 			<h1><?php _e( 'Tag Archive: ', '<%= _.slugify(appMachineName) %>' ); echo single_tag_title('', false); ?></h1>
 
-			<?php get_template_part('loop'); ?>
+			<?php get_template_part('templates/loop'); ?>
 
-			<?php get_template_part('pagination'); ?>
+			<?php get_template_part('templates/pagination'); ?>
 
 		</section>
 		<!-- /section -->

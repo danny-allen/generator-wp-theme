@@ -12,7 +12,7 @@
  *
  * These files split up the functions.php into manageable files.
  */
-
+include('inc/plugins.php');
 include('inc/theme_support.php');
 include('inc/functions.php');
 include('inc/actions.php');

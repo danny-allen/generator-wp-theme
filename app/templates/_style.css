@@ -1,6 +1,6 @@
 /*
-	Theme Name: <%= _.slugify(appName) %>
-	Description: <%= _.slugify(appName) %> WordPress Theme
+	Theme Name: <%= appName %>
+	Description: <%= appName %> WordPress Theme
 	Version: 0.0.1
 	Author:
 */

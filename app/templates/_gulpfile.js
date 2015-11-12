@@ -53,7 +53,7 @@ gulp.task('html', ['pixrem'], function() {
 
     return gulp.src(filesToProcess)
         .pipe(assets)
-        .pipe($.if('*.js', $.uglify()))
+        //.pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.css', $.csso()))
         .pipe(assets.restore())
         .pipe($.useref())
@@ -63,9 +63,6 @@ gulp.task('html', ['pixrem'], function() {
         })))
         .pipe(gulp.dest('dist'));
 });
-
-
-
 
 
 
@@ -85,34 +82,22 @@ gulp.task('movePhpFiles', ['html'], function(){
         'app/inc/*.php'
     ])
     .pipe(gulp.dest('dist/inc'));
-});
 
-gulp.task('wordpress', function () {
-    return gulp.src(
-        [
-            //all these filetypes
-            'app/*.php', 'app/*.php', 'app/*.js', 'app/*.css',
+    // Move inc folder
+    gulp.src([
+        'app/styles/*.css'
+    ])
+    .pipe(gulp.dest('dist/styles'));
 
-            //get all of the inc files too
-            'app/inc/*.php',
+    gulp.src([
+        //all files
+        'app/*.*',
 
-            //these extra files
-            'app/LICENCE.md', 'app/screenshot.png',
-
-            //but not these
-            '!app/header.php', '!app/footer.php'
-        ],
-        { dot: true })
+        //but not these
+        '!app/header.php', '!app/footer.php', '!app/*.html'
+    ], { dot: true })
     .pipe(gulp.dest('dist'));
 });
-
-
-
-
-
-
-
-
 
 
 gulp.task('images', function() {
@@ -131,41 +116,8 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest('dist/fonts'));
 });
 
-gulp.task('extras', function() {
-    return gulp.src([
-        'app/*.*',
-        '!app/*.html'
-    ], {
-        dot: true
-    }).pipe(gulp.dest('dist'));
-});
 
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
-
-gulp.task('connect', ['pixrem'], function() {
-    var serveStatic = require('serve-static');
-    var serveIndex = require('serve-index');
-    var client = require('connect')()
-        .use(require('connect-livereload')({
-            port: 35729
-        }))
-        .use(serveStatic('.tmp'))
-        .use(serveStatic('app'))
-        // paths to bower_components should be relative to the current file
-        // e.g. in client/index.html you should use ../bower_components
-        .use('/bower_components', serveStatic('bower_components'))
-        .use(serveIndex('app'));
-
-    require('http').createServer(client)
-        .listen(9000)
-        .on('listening', function() {
-            console.log('Started connect web server on http://localhost:9000');
-        });
-});
-
-gulp.task('serve', ['connect', 'watch'], function() {
-    require('opn')('http://localhost:9000');
-});
 
 // inject bower components
 gulp.task('wiredep', function() {
@@ -215,8 +167,29 @@ gulp.task('watch', ['connect'], function() {
 });
 
 
+gulp.task('connect', ['pixrem'], function() {
+    var serveStatic = require('serve-static');
+    var serveIndex = require('serve-index');
+    var client = require('connect')()
+        .use(require('connect-livereload')({
+            port: 35729
+        }))
+        .use(serveStatic('.tmp'))
+        .use(serveStatic('app'))
+        // paths to bower_components should be relative to the current file
+        // e.g. in client/index.html you should use ../bower_components
+        .use('/bower_components', serveStatic('bower_components'))
+        .use(serveIndex('app'));
 
-gulp.task('build', ['wiredepBuild', 'jshint', 'images', 'fonts', 'extras', 'movePhpFiles', 'wordpress'], function() {
+    require('http').createServer(client)
+        .listen(9000)
+        .on('listening', function() {
+            console.log('Started connect web server on http://localhost:9000');
+        });
+});
+
+
+gulp.task('build', ['wiredepBuild', 'jshint', 'images', 'fonts', 'movePhpFiles', 'wordpress'], function() {
     return gulp.src('dist/**/*').pipe($.size({
         title: 'build',
         gzip: true

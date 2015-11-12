@@ -28,16 +28,18 @@
 
 
 
-    	<!-- build:js scripts/vendor.js -->
+	    <!-- build:js /scripts/vendor.js -->
 	    <!-- bower:js -->
-	    <script src="bower_components/jquery/dist/jquery.js"></script>
 	    <!-- endbower -->
-    	<!-- endbuild -->
+	    <!-- endbuild -->
 
-        <script src="scripts/myApp.js"></script>
-        <script src="scripts/modules/moduleA.js"></script>
-        <script src="scripts/modules/moduleB.js"></script>
-        <script src="scripts/main.js"></script>
-
+	    <!-- build:js /scripts/main.js -->
+	     
+	    <script src="scripts/myApp.js"></script>
+	    <script src="scripts/modules/moduleA.js"></script>
+	    <script src="scripts/modules/moduleB.js"></script>
+	    <script src="scripts/main.js"></script> 
+	     
+	    <!-- endbuild -->
 	</body>
 </html>

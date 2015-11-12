@@ -7,10 +7,10 @@ This generator is based on the (CDD Generator)[https://github.com/bnhovde/genera
 
 ## Installation
 ``` sh
-    cd /the/generator/dir # make it if you need
-    git clone https://github.com/danny-allen/generator-wp-theme .
-    npm install -g generator-wp-theme
-    npm link
+cd /the/generator/dir # make it if you need
+git clone https://github.com/danny-allen/generator-wp-theme .
+npm install -g generator-wp-theme
+npm link
 ```
 
 ## License

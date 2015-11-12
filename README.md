@@ -38,7 +38,9 @@ npm link
 
 So, you've set up the generator. Now all you need to do is run it. Create a folder to store the theme:
 
-```mkdir /path/to/theme```
+```
+mkdir /path/to/theme
+```
 
 Now when you create a theme in your WordPress installation you can symlink to this project folder. This this:
 

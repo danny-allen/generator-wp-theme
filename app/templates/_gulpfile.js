@@ -4,6 +4,11 @@ var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');
 var $ = require('gulp-load-plugins')();
 
+/**
+ * injectScss
+ * 
+ * Handles the injection of sass files within main.scss.
+ */
 gulp.task('injectScss', function() {
 
     var target = gulp.src('app/styles/main.scss');
@@ -21,6 +26,12 @@ gulp.task('injectScss', function() {
     .pipe(gulp.dest('app/styles'));
 });
 
+
+/**
+ * styles
+ *
+ * Runs sass with autoprefixer and outputs to the .tmp folder.
+ */
 gulp.task('styles', ['injectScss'], function() {
     return sass('app/styles/main.scss', { style: 'expanded' })
         .pipe($.autoprefixer({
@@ -29,6 +40,10 @@ gulp.task('styles', ['injectScss'], function() {
         .pipe(gulp.dest('.tmp/styles/temp'));
 });
 
+
+/**
+ * pixrem
+ */
 gulp.task('pixrem', ['styles'], function() {
     return gulp.src('.tmp/styles/temp/main.css')
         .pipe($.pixrem('16px'))
@@ -36,6 +51,12 @@ gulp.task('pixrem', ['styles'], function() {
         .pipe(gulp.dest('app/styles'));
 });
 
+
+/**
+ * jshint
+ *
+ * Validates the JS.
+ */
 gulp.task('jshint', function() {
     return gulp.src('app/scripts/**/*.js')
         .pipe($.jshint())
@@ -43,6 +64,12 @@ gulp.task('jshint', function() {
         .pipe($.jshint.reporter('fail'));
 });
 
+
+/**
+ * html
+ *
+ * Minifies the HTML, CSS and JS.
+ */
 gulp.task('html', ['pixrem'], function() {
 
     var assets = $.useref.assets({
@@ -53,7 +80,7 @@ gulp.task('html', ['pixrem'], function() {
 
     return gulp.src(filesToProcess)
         .pipe(assets)
-        //.pipe($.if('*.js', $.uglify()))
+        .pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.css', $.csso()))
         .pipe(assets.restore())
         .pipe($.useref())
@@ -65,41 +92,57 @@ gulp.task('html', ['pixrem'], function() {
 });
 
 
+/**
+ * moveOtherFiles
+ *
+ * Handles the moving of the files in the app folder where they do not need extra processing.
+ * Also includes sub folders.
+ */
+gulp.task('moveOtherFiles', ['html'], function(){
 
-
-
-
-gulp.task('movePhpFiles', ['html'], function(){
-    // Move wordpress partials to the correct folder
-    gulp.src([
-        'dist/header.php',
-        'dist/footer.php'
-    ])
-    .pipe(gulp.dest('dist'));
-
-    // Move inc folder
+    //move inc folder (php only)
     gulp.src([
         'app/inc/*.php'
     ])
     .pipe(gulp.dest('dist/inc'));
 
-    // Move inc folder
+    //move inc folder
+    gulp.src([
+        'app/languages/**/*'
+    ])
+    .pipe(gulp.dest('dist/languages'));
+
+    //move templates folder
+    gulp.src([
+        'app/templates/**/*'
+    ])
+    .pipe(gulp.dest('dist/templates'));
+
+    //move styles folder (css only)
     gulp.src([
         'app/styles/*.css'
     ])
     .pipe(gulp.dest('dist/styles'));
 
+    //move all inside app, except the header and footer (and html files).
     gulp.src([
+
         //all files
         'app/*.*',
 
         //but not these
         '!app/header.php', '!app/footer.php', '!app/*.html'
+
     ], { dot: true })
     .pipe(gulp.dest('dist'));
 });
 
 
+/**
+ * images
+ *
+ * Runs image compression and places the images in the dist folder.
+ */
 gulp.task('images', function() {
     return gulp.src('app/images/**/*')
         .pipe($.cache($.imagemin({
@@ -109,6 +152,12 @@ gulp.task('images', function() {
         .pipe(gulp.dest('dist/images'));
 });
 
+
+/**
+ * fonts
+ *
+ * Optimises the font files and places them in the dist folder.
+ */
 gulp.task('fonts', function() {
     return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
         .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
@@ -117,9 +166,20 @@ gulp.task('fonts', function() {
 });
 
 
-gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
+/**
+ * clean
+ *
+ * Deletes the dist and .tmp folders.
+ */
+gulp.task('clean', require('del')
+    .bind(null, ['.tmp', 'dist']));
 
-// inject bower components
+
+/**
+ * wiredep
+ * 
+ * Inject bower components into header and footer.
+ */
 gulp.task('wiredep', function() {
     var wiredep = require('wiredep').stream;
 
@@ -135,7 +195,13 @@ gulp.task('wiredep', function() {
         .pipe(gulp.dest('app'));
 });
 
-// inject bower components without dev
+
+/**
+ * wiredepBuild
+ *
+ * Inject bower components without dev
+ */
+
 gulp.task('wiredepBuild', function() {
     var wiredep = require('wiredep').stream;
 
@@ -151,6 +217,11 @@ gulp.task('wiredepBuild', function() {
 });
 
 
+/**
+ * watch
+ *
+ * Watch for changes on css and js files.
+ */
 gulp.task('watch', ['connect'], function() {
     $.livereload.listen();
 
@@ -167,6 +238,9 @@ gulp.task('watch', ['connect'], function() {
 });
 
 
+/**
+ * connect
+ */
 gulp.task('connect', ['pixrem'], function() {
     var serveStatic = require('serve-static');
     var serveIndex = require('serve-index');
@@ -189,7 +263,12 @@ gulp.task('connect', ['pixrem'], function() {
 });
 
 
-gulp.task('build', ['wiredepBuild', 'jshint', 'images', 'fonts', 'movePhpFiles', 'wordpress'], function() {
+/**
+ * Build
+ *
+ * Creates a distribution in the dist folder, depending on many other tasks to produce the final output.
+ */
+gulp.task('build', ['wiredepBuild', 'jshint', 'moveOtherFiles', 'images', 'fonts'], function() {
     return gulp.src('dist/**/*').pipe($.size({
         title: 'build',
         gzip: true
@@ -197,6 +276,11 @@ gulp.task('build', ['wiredepBuild', 'jshint', 'images', 'fonts', 'movePhpFiles',
 });
 
 
+/**
+ * default
+ * 
+ * Runs the build task after cleaning any existing distribution.
+ */
 gulp.task('default', ['clean'], function() {
     gulp.start('build');
 });

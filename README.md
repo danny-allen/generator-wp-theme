@@ -45,7 +45,7 @@ Now when you create a theme in your WordPress installation you can symlink to th
 
 
 ```
-ls -s /path/to/theme /path/to/wordpress/wp-content/plugins/themename/app
+ln -s /path/to/theme /path/to/wordpress/wp-content/plugins/themename/app
 ```
 
 Swap `app` to `dist` on production (this can be created with the `gulp` command inside the project folder).

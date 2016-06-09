@@ -7,9 +7,11 @@ var namespace = namespace || {};
     'use strict';
   
     // Initialise app 
-    var myApp = new namespace.MyApp({ 'something' : 'here' });
+    var myModule = new namespace.moduleA();
 
-    // Use functionality from module b
-    myApp.moduleB.talk('Looking for a city');
+    //removeIf(production) 
+        //bear trap
+        $('body').bearTrap();
+    //endRemoveIf(production) 
   
 })(jQuery, window, document);

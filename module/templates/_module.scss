@@ -13,9 +13,7 @@
      * Variables
      */
 
-    $<%= _.slugify(moduleName) %>-var:    7em;
-    $<%= _.slugify(moduleName) %>-col-fg: #3B5998;
-    $<%= _.slugify(moduleName) %>-col-bg: #c0deed;
+    $this: '.<%= _.slugify(moduleName) %>';
 
 
     /**

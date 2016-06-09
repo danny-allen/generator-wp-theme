@@ -2,5 +2,7 @@
     "name": "<%= _.slugify(appName) %>",
     "version": "1.0.0",
     "dependencies": <%= JSON.stringify(dependencies) %>,
-    "devDependencies": {}
+    "devDependencies": {
+    	"beartrap": "https://github.com/danny-allen/bear-trap.git"
+	}
 }

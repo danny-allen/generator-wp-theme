@@ -1,15 +1,5 @@
-			<!-- footer -->
-			<footer class="footer" role="contentinfo">
 
-				<!-- copyright -->
-				<p class="copyright">
-					&copy; <?php echo date('Y'); ?> Copyright <?php bloginfo('name'); ?>. <?php _e('Powered by', '<%= _.slugify(appMachineName) %>'); ?>
-					<a href="//wordpress.org" title="WordPress">WordPress</a> &amp; <a href="//cddnation.com" title="<%= _.slugify(appName) %>"><%= _.slugify(appName) %></a>.
-				</p>
-				<!-- /copyright -->
-
-			</footer>
-			<!-- /footer -->
+			<?php get_template_part('templates/global/footer'); ?>
 
 		</div>
 		<!-- /wrapper -->

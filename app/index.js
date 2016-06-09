@@ -153,11 +153,6 @@ module.exports = yeoman.generators.Base.extend({
             }
         },
 
-        //copy the gulp file
-        copyGulpfile: function() {
-            this.template('_gulpfile.js', 'gulpfile.js');
-        },
-
         //create all the folders we need
         copyStructure: function() {
             this.mkdir('app');
@@ -168,13 +163,21 @@ module.exports = yeoman.generators.Base.extend({
             this.mkdir('app/scripts');
             this.mkdir('app/styles');
             this.mkdir('app/templates');
+            this.mkdir('gulp');
+        },
+
+        //copy the gulp files folder
+        copyGulp: function() {
+            this.template('_gulpfile.js', 'gulpfile.js');
+            this.directory('gulp', 'gulp');
+
+
         },
 
         //copy the js module structure
         copyScripts: function() {
             this.directory('scripts/modules', 'app/scripts/modules');
             this.copy('scripts/main.js', 'app/scripts/main.js');
-            this.copy('scripts/myApp.js', 'app/scripts/myApp.js');
         },
 
         //get the sass file structure

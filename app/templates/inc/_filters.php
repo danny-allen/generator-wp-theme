@@ -22,6 +22,10 @@ add_filter('style_loader_tag', '<%= _.slugify(appMachineName) %>_style_remove');
 add_filter('post_thumbnail_html', 'remove_thumbnail_dimensions', 10); // Remove width and height dynamic attributes to thumbnails
 add_filter('image_send_to_editor', 'remove_thumbnail_dimensions', 10); // Remove width and height dynamic attributes to post images
 
+add_filter('mce_css', '<%= _.slugify(appMachineName) %>_tinymce_css');
+add_filter('tiny_mce_before_init', 'myformatTinyMCE' );
+add_filter('image_size_names_choose', '<%= _.slugify(appMachineName) %>_show_image_sizes');
 
 //remove Filters
 remove_filter('the_excerpt', 'wpautop'); // Remove <p> tags from Excerpt altogether
+

@@ -1,10 +1,9 @@
 /**
  * <%= _.slugify(moduleName) %>
- * 
  * <%= moduleDesc %>
  */
 
-var Namespace = Namespace || {};
+var namespace = namespace || {};
 
 (function($, window, document, undefined) {
 
@@ -17,7 +16,7 @@ var Namespace = Namespace || {};
      * 
      * @param   obj     userOptions     User can override options with this.
      */
-    Namespace.<%= _.slugify(moduleNameCaps) %> = function(userOptions){
+    namespace.<%= _.slugify(moduleNameCaps) %> = function(userOptions){
 
         //default options
         this.options = {
@@ -37,7 +36,7 @@ var Namespace = Namespace || {};
      *
      * Initial functionality that happens on instantiation of <%= _.slugify(moduleNameCaps) %>.
      */
-    Namespace.<%= _.slugify(moduleNameCaps) %>.prototype._init = function(){
+    namespace.<%= _.slugify(moduleNameCaps) %>.prototype._init = function(){
 
     };
 

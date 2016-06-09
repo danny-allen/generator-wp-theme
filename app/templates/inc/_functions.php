@@ -4,58 +4,74 @@
  * Functions
  */
 
-//<%= _.slugify(appName) %> navigation
+//limit admins to use certain image sizes
+function <%= _.slugify(appMachineName) %>_show_image_sizes($sizes) {
+    $sizes['wide'] = __( 'Wide', '<%= _.slugify(appMachineName) %>_' );
+    return $sizes;
+}
+
+//limit wysiwyg area to certain text tags
+function myformatTinyMCE($in) {
+  $in['block_formats'] = "Paragraph=p;Header=h3";
+  return $in;
+}
+
+// Add custom CTA styles to TinyMCE editor
+function <%= _.slugify(appMachineName) %>_tinymce_css($wp) {
+    $wp .= ',' . get_bloginfo('stylesheet_directory') . '/styles/tinymce.css';
+    return $wp;
+}
+
+//<%= _.slugify(appName) %> main navigation
 function <%= _.slugify(appMachineName) %>_nav() {
-	wp_nav_menu(
-	array(
-		'theme_location'  => 'header-menu',
-		'menu'            => '',
-		'container'       => 'div',
-		'container_class' => 'menu-{menu slug}-container',
-		'container_id'    => '',
-		'menu_class'      => 'menu',
-		'menu_id'         => '',
-		'echo'            => true,
-		'fallback_cb'     => 'wp_page_menu',
-		'before'          => '',
-		'after'           => '',
-		'link_before'     => '',
-		'link_after'      => '',
-		'items_wrap'      => '<ul>%3$s</ul>',
-		'depth'           => 0,
-		'walker'          => ''
-		)
-	);
+    wp_nav_menu(
+    array(
+        'theme_location'  => 'header-menu',
+        'menu'            => 'header-menu',
+        'container'       => false,
+        'menu_class'      => false,
+        'menu_id'         => false,
+        'echo'            => true,
+        'fallback_cb'     => false,
+        'before'          => '',
+        'after'           => '',
+        'link_before'     => '',
+        'link_after'      => '',
+        'items_wrap'      => '<ul>%3$s</ul>',
+        'depth'           => 0,
+        'walker'          => ''
+        )
+    );
 }
 
-//load <%= _.slugify(appName) %> scripts (header.php)
-function <%= _.slugify(appMachineName) %>_header_scripts() {
-    if ($GLOBALS['pagenow'] != 'wp-login.php' && !is_admin()) {
-        wp_register_script('<%= _.slugify(appMachineName) %>_scripts', get_template_directory_uri() . '/scripts/main.js', array('jquery'), '1.0.0'); //custom scripts
-        wp_enqueue_script('<%= _.slugify(appMachineName) %>_scripts'); // Enqueue it!
-    }
+//<%= _.slugify(appName) %> footer navigation
+function <%= _.slugify(appMachineName) %>_footernav() {
+    wp_nav_menu(
+    array(
+        'theme_location'  => 'footer-menu',
+        'menu'            => 'footer-menu',
+        'container'       => false,
+        'menu_class'      => false,
+        'menu_id'         => false,
+        'echo'            => true,
+        'fallback_cb'     => false,
+        'before'          => '',
+        'after'           => '',
+        'link_before'     => '',
+        'link_after'      => '',
+        'items_wrap'      => '<ul>%3$s</ul>',
+        'depth'           => 0,
+        'before'          => '<span class="footer-nav__seperator"> / </span>',
+        'walker'          => ''
+        )
+    );
 }
 
-//load <%= _.slugify(appName) %> conditional scripts
-function <%= _.slugify(appMachineName) %>_conditional_scripts() {
-    if (is_page('pagenamehere')) {
-        wp_register_script('scriptname', get_template_directory_uri() . '/js/scriptname.js', array('jquery'), '1.0.0'); //conditional script(s)
-        wp_enqueue_script('scriptname'); // Enqueue it!
-    }
-}
-
-//load <%= _.slugify(appName) %> styles
-function <%= _.slugify(appMachineName) %>_styles() {
-    wp_register_style('<%= _.slugify(appMachineName) %>_styles', get_template_directory_uri() . '/styles/main.css', array(), '1.0', 'all');
-    wp_enqueue_style('<%= _.slugify(appMachineName) %>_styles'); // Enqueue it!
-}
-
-//register <%= _.slugify(appName) %> Navigation
+//register <%= _.slugify(appMachineName) %> Navigation
 function <%= _.slugify(appMachineName) %>_register_menu() {
     register_nav_menus(array( // Using array to specify more menus if needed
         'header-menu' => __('Header Menu', '<%= _.slugify(appMachineName) %>_'), // Main Navigation
-        'sidebar-menu' => __('Sidebar Menu', '<%= _.slugify(appMachineName) %>_'), // Sidebar Navigation
-        'extra-menu' => __('Extra Menu', '<%= _.slugify(appMachineName) %>_') // Extra Navigation if needed (duplicate as many as you need!)
+        'footer-menu' => __('Footer Menu', '<%= _.slugify(appMachineName) %>_'), // Main Navigation
     ));
 }
 

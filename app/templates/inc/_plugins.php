@@ -51,18 +51,6 @@ function my_theme_register_required_plugins() {
     $plugins = array(
 
         /**
-         * Advanced Custom Fields
-         */
-        array(
-            'name'              =>  'Advanced Custom Fields',
-            'slug'              =>  'advanced-custom-fields',
-            'required'          =>  true,
-            'force_activation'  =>  true, 
-
-        ),
-
-
-        /**
          * W3 Total Cache
          */
         array(
@@ -70,32 +58,18 @@ function my_theme_register_required_plugins() {
             'slug'              =>  'w3-total-cache',
             'required'          =>  true,
             'force_activation'  =>  false, 
-
         ),
-        
-
-        /**
-         *  Advanced Custom Fields - Repeater (ADD-ON)
-         */
-        // array(
-        //     'name'                  =>  'Advanced Custom Fields: Repeater Field',
-        //     'slug'                  =>  'acf-repeater',
-        //     'source'                =>  get_stylesheet_directory() . '/plugins/acf-repeater.zip',
-        //     'required'              =>  true,
-        //     'force_activation'      =>  true,
-        // ),
 
 
         /**
-         *  Advanced Custom Fields - Image Crop (ADD-ON)
+         * Ninja Forms
          */
-        // array(
-        //     'name'                  =>  'Advanced Custom Fields: Image Crop Add-on',
-        //     'slug'                  =>  'acf-image-crop-add-on',
-        //     'source'                =>  get_stylesheet_directory() . '/plugins/acf-image-crop-add-on.zip',
-        //     'required'              =>  true,
-        //     'force_activation'      =>  true,
-        // ),
+        array(
+            'name'              =>  'Ninja Forms',
+            'slug'              =>  'ninja-forms',
+            'required'          =>  true,
+            'force_activation'  =>  false,
+        ),
     );
 
 

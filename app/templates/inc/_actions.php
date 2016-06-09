@@ -5,10 +5,7 @@
  */
 
 // Add Actions
-add_action('init', '<%= _.slugify(appMachineName) %>_header_scripts'); // Add Custom Scripts to wp_head
-add_action('wp_print_scripts', '<%= _.slugify(appMachineName) %>_conditional_scripts'); // Add Conditional Page Scripts
 add_action('get_header', 'enable_threaded_comments'); // Enable Threaded Comments
-add_action('wp_enqueue_scripts', '<%= _.slugify(appMachineName) %>_styles'); // Add Theme Stylesheet
 add_action('init', '<%= _.slugify(appMachineName) %>_register_menu'); // Add HTML5 Blank Menu
 add_action('init', '<%= _.slugify(appMachineName) %>_create_post_type'); // Add our HTML5 Blank Custom Post Type
 add_action('widgets_init', 'my_remove_recent_comments_style'); // Remove inline Recent Comment Styles from wp_head()

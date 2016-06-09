@@ -2,155 +2,38 @@
 'use strict';
 var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');
+var requireDir = require('require-dir');
 var $ = require('gulp-load-plugins')();
 
-gulp.task('injectScss', function() {
+/**
+ * Get other gulp files
+ * 
+ * Well, we don't want everything in here!
+ */
+requireDir('./gulp');
 
-    var target = gulp.src('app/styles/main.scss');
-    var sources = gulp.src(['app/styles/modules/**/*.scss'], {read: false});
 
-    return target.pipe($.inject(sources, {
-        starttag: '// inject:scss',
-        endtag: '// endinject',
-        relative: true,
-        transform: function (filepath) {
-            // Return path without file ext
-            return '\'' + filepath.slice(0, -5) + '\',';
-        }
-    }))
-    .pipe(gulp.dest('app/styles'));
-});
 
-gulp.task('styles', ['injectScss'], function() {
-    return sass('app/styles/main.scss', { style: 'expanded' })
-        .pipe($.autoprefixer({
-            browsers: ['last 2 versions']
-        }))
-        .pipe(gulp.dest('.tmp/styles/temp'));
-});
-
-gulp.task('pixrem', ['styles'], function() {
-    return gulp.src('.tmp/styles/temp/main.css')
-        .pipe($.pixrem('16px'))
-        .pipe(gulp.dest('.tmp/styles'))
-        .pipe(gulp.dest('app/styles'));
-});
-
-gulp.task('jshint', function() {
-    return gulp.src('app/scripts/**/*.js')
-        .pipe($.jshint())
-        .pipe($.jshint.reporter('jshint-stylish'))
-        .pipe($.jshint.reporter('fail'));
-});
-
-gulp.task('html', ['pixrem'], function() {
-
-    var assets = $.useref.assets({
-        searchPath: '{.tmp,app}'
-    });
-
-    var filesToProcess = 'app/*.php';
-
-    return gulp.src(filesToProcess)
-        .pipe(assets)
-        //.pipe($.if('*.js', $.uglify()))
-        .pipe($.if('*.css', $.csso()))
-        .pipe(assets.restore())
-        .pipe($.useref())
-        .pipe($.if('*.html', $.minifyHtml({
-            conditionals: true,
-            loose: true
-        })))
-        .pipe(gulp.dest('dist'));
+/**
+ * default
+ *
+ * Runs build
+ *
+ * Deps: clean
+ */
+gulp.task('default', ['clean'], function() {
+    gulp.start('build');
 });
 
 
-
-
-
-
-gulp.task('movePhpFiles', ['html'], function(){
-    // Move wordpress partials to the correct folder
-    gulp.src([
-        'dist/header.php',
-        'dist/footer.php'
-    ])
-    .pipe(gulp.dest('dist'));
-
-    // Move inc folder
-    gulp.src([
-        'app/inc/*.php'
-    ])
-    .pipe(gulp.dest('dist/inc'));
-
-    // Move inc folder
-    gulp.src([
-        'app/styles/*.css'
-    ])
-    .pipe(gulp.dest('dist/styles'));
-
-    gulp.src([
-        //all files
-        'app/*.*',
-
-        //but not these
-        '!app/header.php', '!app/footer.php', '!app/*.html'
-    ], { dot: true })
-    .pipe(gulp.dest('dist'));
-});
-
-
-gulp.task('images', function() {
-    return gulp.src('app/images/**/*')
-        .pipe($.cache($.imagemin({
-            progressive: true,
-            interlaced: true
-        })))
-        .pipe(gulp.dest('dist/images'));
-});
-
-gulp.task('fonts', function() {
-    return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
-        .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
-        .pipe($.flatten())
-        .pipe(gulp.dest('dist/fonts'));
-});
-
-
-gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
-
-// inject bower components
-gulp.task('wiredep', function() {
-    var wiredep = require('wiredep').stream;
-
-    gulp.src('app/styles/*.scss')
-        .pipe(wiredep())
-        .pipe(gulp.dest('app/styles'));
-
-    gulp.src(['app/header.php', 'app/footer.php'])
-        .pipe(wiredep({
-            ignorePath: /^(\/|\.+(?!\/[^\.]))+\.+/,
-            devDependencies: true, // default: false
-        }))
-        .pipe(gulp.dest('app'));
-});
-
-// inject bower components without dev
-gulp.task('wiredepBuild', function() {
-    var wiredep = require('wiredep').stream;
-
-    gulp.src('app/styles/*.scss')
-        .pipe(wiredep())
-        .pipe(gulp.dest('app/styles'));
-
-    gulp.src(['app/header.php', 'app/footer.php'])
-        .pipe(wiredep({
-            ignorePath: /^(\/|\.+(?!\/[^\.]))+\.+/
-        }))
-        .pipe(gulp.dest('app'));
-});
-
-
+/**
+ * watch
+ * 
+ * Listens for changes to various files and compiles SASS, injects bower
+ * components.
+ *
+ * Deps: connect
+ */
 gulp.task('watch', ['connect'], function() {
     $.livereload.listen();
 
@@ -186,17 +69,4 @@ gulp.task('connect', ['pixrem'], function() {
         .on('listening', function() {
             console.log('Started connect web server on http://localhost:9000');
         });
-});
-
-
-gulp.task('build', ['wiredepBuild', 'jshint', 'images', 'fonts', 'movePhpFiles', 'wordpress'], function() {
-    return gulp.src('dist/**/*').pipe($.size({
-        title: 'build',
-        gzip: true
-    }));
-});
-
-
-gulp.task('default', ['clean'], function() {
-    gulp.start('build');
 });

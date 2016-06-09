@@ -3,9 +3,9 @@
 
 ## Features
 
-This generator is based on the (CDD Generator)[https://github.com/bnhovde/generator-fed-up].
+This generator is based on the [CDD Generator](https://github.com/bnhovde/generator-fed-up).
 
-The idea behind this structure, was to allow the project to have both a distribution and development version of the theme whilst enabling deployment with GIT. This method also means the GIT repo does not sit within the plugins directory of WordPress which would stop you deploying an additional theme in the same way.
+The idea behind this structure, was to allow the project to have both a distribution and development version of the theme whilst enabling deployment with GIT. This method also means the GIT repo does not sit within the themes directory of WordPress which would stop you deploying an additional theme in the same way.
 
 
 ## Installation
@@ -37,15 +37,15 @@ mkdir /path/to/theme
 ```
 
 This command will run the generator. Just answer all the questions and let Yeoman do it's thing!
+
 ```
 yo wp-theme
 ```
 
-Now when you create a theme in your WordPress installation you can symlink to this project folder. This this:
-
+You now have your theme which should exists somewhere outside of the WordPress installtion. Now go to the themes folder (wp-content/themes) and create a symlink to your theme folder, like this:
 
 ```
-ln -s /path/to/theme /path/to/wordpress/wp-content/plugins/themename/app
+ln -s /path/to/your-theme/app theme-name
 ```
 
 Swap `app` to `dist` on production (this can be created with the `gulp` command inside the project folder).

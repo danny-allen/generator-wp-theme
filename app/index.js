@@ -202,6 +202,11 @@ module.exports = yeoman.generators.Base.extend({
             this.directory('languages', 'app/languages');
         },
 
+        //get images
+        copyimages: function() {
+            this.directory('images', 'app/images');
+        },
+
 
         /**
          * copyApp

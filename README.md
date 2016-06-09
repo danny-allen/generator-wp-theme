@@ -12,19 +12,19 @@ The idea behind this structure, was to allow the project to have both a distribu
 
 Set up the directory for the generator, move to it, and clone the repo.
 
-```
+```sh
 git clone https://github.com/danny-allen/generator-wp-theme .
 ```
 
 Install the generator.
 
-```
+```sh
 npm install -g generator-wp-theme
 ```
 
 Link the package, to use it globally.
 
-```
+```sh
 npm link
 ```
 
@@ -32,19 +32,19 @@ npm link
 
 So, you've set up the generator. Now all you need to do is run it. Create a folder to store the theme:
 
-```
+```sh
 mkdir /path/to/theme
 ```
 
 This command will run the generator. Just answer all the questions and let Yeoman do it's thing!
 
-```
+```sh
 yo wp-theme
 ```
 
 You now have your theme which should exists somewhere outside of the WordPress installtion. Now go to the themes folder (wp-content/themes) and create a symlink to your theme folder, like this:
 
-```
+```sh
 ln -s /path/to/your-theme/app theme-name
 ```
 
